@@ -3,8 +3,10 @@ import shutil
 
 file_dict = {}
 file_list = []
+folder_path = ""
 
-def sort(folder_path):
+def sort():
+    global folder_path
     items = os.listdir(folder_path)
     
     for item in items:
@@ -21,26 +23,27 @@ def sort(folder_path):
 def make_folder():
     global file_dict
     global file_list 
+    global folder_path
     file_list = list(file_dict.keys())
-    parent_folder = "Test"
+    parent_folder = folder_path
 
     for key in file_dict:
         path = os.path.join(parent_folder, key)
         path = os.path.normpath(path)
         if not os.path.isdir(path):
             os.makedirs(path)
-    
 
 def move_files():
     global file_list
     global file_dict 
+    global folder_path
     
     for item in file_list:
         file_name = file_dict.get(item)
         for names in file_name:
             file_path = names + "." + item
-            source = os.path.join("Test", file_path)
-            destination_folder = os.path.join("Test", item)
+            source = os.path.join(folder_path, file_path)
+            destination_folder = os.path.join(folder_path, item)
             
             os.makedirs(destination_folder, exist_ok=True)
             
