@@ -1,9 +1,10 @@
-from file_sorter import sort
-from file_sorter import grouping
+from file_sorter import *
 
 def main():
-    folder_path = "D:\Coding\Test"
+    folder_path = input("Enter path: ")
     sort(folder_path)
+    make_folder()
+    move_files()
 
 if __name__ == "__main__":
     main()
