@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QMessageBox, QWidget, QLabel, QVBoxLayout, QLineEdit, QApplication, QMainWindow, QPushButton
 from PyQt6.QtGui import QIcon 
-import file_sorter
+from file_sorter import FileSorter
 
 class MainWindow(QMainWindow):        
     def __init__(self):
@@ -62,10 +62,8 @@ class MainWindow(QMainWindow):
         
     def show_text(self):
         text = self.input_box.text()
-        file_sorter.folder_path = text
-        file_sorter.sort()
-        file_sorter.make_folder()
-        file_sorter.move_files()
+        file_sorter = FileSorter(text)
+        file_sorter.run()
         
         msg = QMessageBox()
         msg.setWindowTitle("Sorting Complete")
