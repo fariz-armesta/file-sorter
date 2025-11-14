@@ -1,56 +1,48 @@
 import os
 import shutil
+from pathlib import Path
 
-file_dict = {}
-file_list = []
-folder_path = ""
-
-def sort():
-    global folder_path
-    items = os.listdir(folder_path)
-    
-    for item in items:
-        global file_dict
-        ext = item.rfind(".")
-        ext_res = item[ext + 1:]
-        name_res = item[:ext]
+class FileSorter:
+    def __init__(self, folder_path: str):
+        self.folder_path = Path(folder_path)
+        self.file_dict = {}
         
-        if ext_res in file_dict:
-            file_dict.get(ext_res).append(name_res)
-        else:
-            file_dict[ext_res] = [name_res]
-
-def make_folder():
-    global file_dict
-    global file_list 
-    global folder_path
-    file_list = list(file_dict.keys())
-    parent_folder = folder_path
-
-    for key in file_dict:
-        path = os.path.join(parent_folder, key)
-        path = os.path.normpath(path)
-        if not os.path.isdir(path):
-            os.makedirs(path)
-
-def move_files():
-    global file_list
-    global file_dict 
-    global folder_path
-    
-    for item in file_list:
-        file_name = file_dict.get(item)
-        for names in file_name:
-            file_path = names + "." + item
-            source = os.path.join(folder_path, file_path)
-            destination_folder = os.path.join(folder_path, item)
-            
-            os.makedirs(destination_folder, exist_ok=True)
-            
-            if os.path.isfile(source):
-                destination = os.path.join(destination_folder, os.path.basename(source))
+    def sort(self):
+        items = self.folder_path.iterdir()
                 
-                shutil.move(source, destination)
-        #print(file_name)
+        for item in items:
+            if item.is_dir():
+                continue
+            
+            ext_res = item.suffix[1:]
+            name_res = item.stem
+            
+            if not ext_res:
+                continue
+            
+            if ext_res not in self.file_dict:
+                self.file_dict[ext_res] = []
+            
+            self.file_dict[ext_res].append(name_res)
+
+    def make_folder(self):
+        for ext in self.file_dict:
+            folder = self.folder_path / ext
+            folder.mkdir(exist_ok=True)
+
+    def move_files(self):
+        
+        for ext, names in self.file_dict.items():
+            destination_folder = self.folder_path / ext
+            for name in names: 
+                filename = f"{name}.{ext}"
+                source = self.folder_path / filename
+                destination = destination_folder / filename
+                
+                if source.exists():
+                    shutil.move(source, destination)
     
-    
+    def run(self):
+        self.sort()
+        self.make_folder()
+        self.move_files()
