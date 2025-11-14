@@ -7,10 +7,6 @@ def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    #folder_path = input("Enter path: ")
-    #sort(folder_path)
-    #make_folder()
-    #move_files()
     sys.exit(app.exec())
     
 if __name__ == "__main__":
