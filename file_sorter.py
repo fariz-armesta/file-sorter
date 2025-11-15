@@ -7,6 +7,12 @@ class FileSorter:
         self.folder_path = Path(folder_path)
         self.file_dict = {}
         
+        if not self.folder_path.exists():
+            raise FileNotFoundError(f"Folder does not exists: {self.folder_path}")
+        
+        if not self.folder_path.is_dir():
+            raise NotADirectoryError(f"Path is not a folder: {self.folder_path}")
+        
     def sort(self):
         items = self.folder_path.iterdir()
                 
