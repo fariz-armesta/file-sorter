@@ -9,7 +9,7 @@ class MainWindow(QMainWindow):
         
         self.setWindowTitle("File Sorter - Armesta")
         self.setMinimumSize(400, 300)
-        self.setWindowIcon(QIcon("Logo.jpg"))
+        self.setWindowIcon(QIcon("ARMESTA2_small.png"))
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout()
@@ -59,17 +59,41 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.label)
         central_widget.setLayout(layout)
         
-        
-    def show_text(self):
-        text = self.input_box.text()
-        file_sorter = FileSorter(text)
-        file_sorter.run()
-        
+    def show_error(self, message):
         msg = QMessageBox()
-        msg.setWindowTitle("Sorting Complete")
-        msg.setText(f"folder'{text}' is sorted successfully")
-        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Error")
+        msg.setText(message)
+        msg.setIcon(QMessageBox.Icon.Critical)
         msg.exec()
         self.input_box.clear()
+        
+            
+    def show_text(self):
+        path = self.input_box.text()
+        
+        try:
+            file_sorter = FileSorter(path)    
+            file_sorter.run()
+        
+            msg = QMessageBox()
+            msg.setWindowTitle("Sorting Complete")
+            msg.setText(f"folder'{path}' is sorted successfully")
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.exec()
+            self.input_box.clear()
+            
+        except FileNotFoundError as e:
+            self.show_error(str(e))
+            self.input_box.clear()
+            
+        except NotADirectoryError as e:
+            self.show_error(str(e))
+            self.input_box.clear()
+            
+        except PermissionError as e:
+            self.show_error(str(e))
+            self.input_box.clear()
+            
+            
         
         
