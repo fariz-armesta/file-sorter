@@ -6,7 +6,7 @@ from app import MainWindow
 
 def main():
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon("Logo.jpg"))
+    app.setWindowIcon(QIcon("ARMESTA2_small.ico"))
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
