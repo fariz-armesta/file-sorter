@@ -3,20 +3,29 @@ import shutil
 from pathlib import Path
 
 class FileSorter:
+    """Sort files in a folder into subfolders based on their extensions."""
+    
     def __init__(self, folder_path: str):
         self.folder_path = Path(folder_path)
         self.file_dict = {}
         
         if not self.folder_path.exists():
-            raise FileNotFoundError(f"Folder does not exists: {self.folder_path}")
+            raise FileNotFoundError(
+                f"Folder does not exists: {self.folder_path}"
+            )
         
         if not self.folder_path.is_dir():
-            raise NotADirectoryError(f"Path is not a folder: {self.folder_path}")
+            raise NotADirectoryError(
+                f"Path is not a folder: {self.folder_path}"
+            )
         
         if not os.access(self.folder_path, os.R_OK | os.W_OK):
-            raise PermissionError(f"No read/write permission for folder: {self.folder_path}")
+            raise PermissionError(
+                f"No read/write permission for folder: {self.folder_path}"
+            )
         
     def sort(self):
+        """Sort files in the folder and categorize them by extension."""
         items = self.folder_path.iterdir()
                 
         for item in items:
@@ -41,14 +50,18 @@ class FileSorter:
             self.file_dict[ext_res].append(name_res)
 
     def make_folder(self):
+        """Create subfolders for each file extension."""
         for ext in self.file_dict:
             folder = self.folder_path / ext.upper()
             try:
                 folder.mkdir(exist_ok=True)
             except PermissionError as e:
-                raise PermissionError(f"Cannot create folder '{folder}': {e}")
+                raise PermissionError(
+                    f"Cannot create folder '{folder}': {e}"
+                )
 
     def move_files(self):
+        """Move files into their respective subfolders."""
         for ext, names in self.file_dict.items():
             destination_folder = self.folder_path / ext.upper()
             
@@ -63,11 +76,15 @@ class FileSorter:
                 try:
                     shutil.move(source, destination)
                 except PermissionError as e:
-                    raise PermissionError(f"Cannot move file '{source}' to '{destination}': {e}")
+                    raise PermissionError(
+                        f"Cannot move file '{source}' to "
+                        f"'{destination}': {e}"
+                    )
                 except shutil.Error as e:
                     raise shutil.Error(f"Move failed: {e}")
     
     def run(self):
+        """Execute the sorting process."""
         self.sort()
         self.make_folder()
         self.move_files()

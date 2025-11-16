@@ -1,23 +1,36 @@
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import QMessageBox, QWidget, QLabel, QVBoxLayout, QLineEdit, QApplication, QMainWindow, QPushButton
-from PyQt6.QtGui import QIcon 
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import (
+    QMessageBox, 
+    QWidget, 
+    QLabel, 
+    QVBoxLayout, 
+    QLineEdit,  
+    QMainWindow, 
+    QPushButton,
+)
+from PyQt6.QtGui import QIcon
+ 
 from file_sorter import FileSorter
 
-class MainWindow(QMainWindow):        
+
+class MainWindow(QMainWindow):
+    """Main window for the File Sorter application."""
+            
     def __init__(self):
         super().__init__()
         
         self.setWindowTitle("File Sorter - Armesta")
         self.setMinimumSize(400, 300)
         self.setWindowIcon(QIcon("ARMESTA2_small.png"))
+        
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
+        
         layout = QVBoxLayout()
         
         self.input_box = QLineEdit()
         self.input_box.setPlaceholderText("Folder Path")
         self.input_box.setFixedSize(250, 35)
-        
         self.input_box.setStyleSheet("""
             QLineEdit {
                 padding: 8px;
