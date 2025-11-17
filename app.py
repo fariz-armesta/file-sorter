@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import (
     QLineEdit,  
     QMainWindow, 
     QPushButton,
+    QFileDialog,
 )
 from PyQt6.QtGui import QIcon
  
@@ -67,6 +68,13 @@ class MainWindow(QMainWindow):
         
         button.clicked.connect(self.show_text)
         
+        self.label_folder = QLabel("")
+        self.button_folder = QPushButton("Select Folder")
+        self.button_folder.clicked.connect(self.select_folder)
+        
+        layout.addWidget(self.button_folder, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.label_folder)
+        
         layout.addWidget(self.input_box, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.label)
@@ -106,6 +114,12 @@ class MainWindow(QMainWindow):
         except PermissionError as e:
             self.show_error(str(e))
             self.input_box.clear()
+            
+    def select_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Folder")
+        
+        if folder:
+            self.label.setText(f"Selecter{folder}")    
             
             
         
