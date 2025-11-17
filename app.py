@@ -72,12 +72,31 @@ class MainWindow(QMainWindow):
         self.button_folder = QPushButton("Select Folder")
         self.button_folder.clicked.connect(self.select_folder)
         
-        layout.addWidget(self.button_folder, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(self.label_folder)
+        self.button_folder.setFixedSize(150, 40)
+        
+        self.button_folder.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3e8e41;
+            }
+        """)
         
         layout.addWidget(self.input_box, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.label)
+        
+        layout.addWidget(self.button_folder, alignment=Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.label_folder)
+        
         central_widget.setLayout(layout)
         
     def show_error(self, message):
@@ -119,8 +138,7 @@ class MainWindow(QMainWindow):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
         
         if folder:
-            self.label.setText(f"Selecter{folder}")    
-            
+            self.input_box.setText(folder)
             
         
         
