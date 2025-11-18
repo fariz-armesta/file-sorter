@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QMainWindow, 
     QPushButton,
     QFileDialog,
+    QHBoxLayout,
 )
 from PyQt6.QtGui import QIcon
  
@@ -32,6 +33,7 @@ class MainWindow(QMainWindow):
         self.input_box = QLineEdit()
         self.input_box.setPlaceholderText("Folder Path")
         self.input_box.setFixedSize(250, 35)
+        
         self.input_box.setStyleSheet("""
             QLineEdit {
                 padding: 8px;
@@ -44,6 +46,8 @@ class MainWindow(QMainWindow):
             }                                     
                                                         
         """)
+        
+        button_row = QHBoxLayout()
         
         self.label = QLabel("")
         
@@ -76,26 +80,31 @@ class MainWindow(QMainWindow):
         
         self.button_folder.setStyleSheet("""
             QPushButton {
-                background-color: #4CAF50;
+                background-color: #4c6daf;
                 color: white;
                 padding: 10px 20px;
                 border-radius: 10px;
                 font-size: 14px;
             }
             QPushButton:hover {
-                background-color: #45a049;
+                background-color: #6f98e8;
             }
             QPushButton:pressed {
-                background-color: #3e8e41;
+                background-color: #5a8df2;
             }
         """)
         
         layout.addWidget(self.input_box, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
+        #layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
+        button_row.addWidget(button)
+        button_row.addWidget(self.button_folder)
+        button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addLayout(button_row)        
         layout.addWidget(self.label)
         
-        layout.addWidget(self.button_folder, alignment=Qt.AlignmentFlag.AlignCenter)
+        #layout.addWidget(self.button_folder, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.label_folder)
+        
         
         central_widget.setLayout(layout)
         
