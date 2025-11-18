@@ -28,11 +28,28 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         
+        input_row = QHBoxLayout() 
+        
         layout = QVBoxLayout()
         
         self.input_box = QLineEdit()
         self.input_box.setPlaceholderText("Folder Path")
         self.input_box.setFixedSize(250, 35)
+        
+        self.clear_button = QPushButton("X")
+        self.clear_button.setFixedSize(30, 30)
+        self.clear_button.setStyleSheet("""
+            QPushButton {
+                background-color: #d9534f;
+                color: white;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #c9302c;
+            }
+        """)
+        self.clear_button.clicked.connect(self.input_box.clear)
         
         self.input_box.setStyleSheet("""
             QLineEdit {
@@ -46,6 +63,8 @@ class MainWindow(QMainWindow):
             }                                     
                                                         
         """)
+        
+        
         
         button_row = QHBoxLayout()
         
@@ -94,7 +113,11 @@ class MainWindow(QMainWindow):
             }
         """)
         
-        layout.addWidget(self.input_box, alignment=Qt.AlignmentFlag.AlignCenter)
+        input_row.addWidget(self.input_box)
+        input_row.addWidget(self.clear_button)
+        layout.addLayout(input_row)
+        
+        #layout.addWidget(self.input_box, alignment=Qt.AlignmentFlag.AlignCenter)
         #layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
         button_row.addWidget(button)
         button_row.addWidget(self.button_folder)
