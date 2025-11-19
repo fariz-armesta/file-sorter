@@ -9,10 +9,13 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QFileDialog,
     QHBoxLayout,
+    QTableWidgetItem,
+    QTableWidget,
 )
 from PyQt6.QtGui import QIcon
  
 from file_sorter import FileSorter
+from history_manager import HistoryManager
 
 
 class MainWindow(QMainWindow):
@@ -20,6 +23,8 @@ class MainWindow(QMainWindow):
             
     def __init__(self):
         super().__init__()
+        
+        self.history = HistoryManager()
         
         self.setWindowTitle("File Sorter - Armesta")
         self.setMinimumSize(400, 300)
@@ -63,7 +68,6 @@ class MainWindow(QMainWindow):
             }                                     
                                                         
         """)
-        
         
         
         button_row = QHBoxLayout()
@@ -113,23 +117,44 @@ class MainWindow(QMainWindow):
             }
         """)
         
+        self.table = QTableWidget()
+        
         input_row.addWidget(self.input_box)
         input_row.addWidget(self.clear_button)
         layout.addLayout(input_row)
         
-        #layout.addWidget(self.input_box, alignment=Qt.AlignmentFlag.AlignCenter)
-        #layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
         button_row.addWidget(button)
         button_row.addWidget(self.button_folder)
         button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addLayout(button_row)        
         layout.addWidget(self.label)
         
-        #layout.addWidget(self.button_folder, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.label_folder)
+        layout.addWidget(self.table)
         
+        history_button = QPushButton("Show History")
+        
+        history_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3e8e41;
+            }
+        """)
+        
+        history_button.clicked.connect(self.show_history)
+        layout.addWidget(history_button)
         
         central_widget.setLayout(layout)
+        
         
     def show_error(self, message):
         msg = QMessageBox()
@@ -144,8 +169,8 @@ class MainWindow(QMainWindow):
         path = self.input_box.text()
         
         try:
-            file_sorter = FileSorter(path)    
-            file_sorter.run()
+            self.file_sorter = FileSorter(path)    
+            self.file_sorter.run()
         
             msg = QMessageBox()
             msg.setWindowTitle("Sorting Complete")
@@ -171,6 +196,23 @@ class MainWindow(QMainWindow):
         
         if folder:
             self.input_box.setText(folder)
+            
+    def show_history(self):
+        """"""
+        
+        data = self.history.get_history()
+        
+        self.table.setRowCount(len(data))
+        self.table.setColumnCount(6)
+        self.table.setHorizontalHeaderLabels(["ID", "Batch ID", "File Name", "From", "To", "Moved At"])
+        
+        for row_index, row in enumerate(data):
+            self.table.setItem(row_index, 0, QTableWidgetItem(str(row["id"])))
+            self.table.setItem(row_index, 1, QTableWidgetItem(row["batch_id"]))
+            self.table.setItem(row_index, 2, QTableWidgetItem(row["file_name"]))
+            self.table.setItem(row_index, 3, QTableWidgetItem(row["from_path"]))
+            self.table.setItem(row_index, 4, QTableWidgetItem(row["to_path"]))
+            self.table.setItem(row_index, 5, QTableWidgetItem(row["moved_at"]))
             
         
         

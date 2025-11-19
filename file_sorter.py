@@ -1,11 +1,15 @@
 import os
 import shutil
 from pathlib import Path
+import uuid
+
+from history_manager import HistoryManager
 
 class FileSorter:
     """Sort files in a folder into subfolders based on their extensions."""
     
     def __init__(self, folder_path: str):
+        self.history = HistoryManager()
         self.folder_path = Path(folder_path)
         self.file_dict = {}
         
@@ -62,6 +66,8 @@ class FileSorter:
 
     def move_files(self):
         """Move files into their respective subfolders."""
+        
+        batch_id_per_job = str(uuid.uuid4())
         for ext, names in self.file_dict.items():
             destination_folder = self.folder_path / ext.upper()
             
@@ -75,6 +81,13 @@ class FileSorter:
                 
                 try:
                     shutil.move(source, destination)
+                    
+                    self.history.add_record(
+                        batch_id=batch_id_per_job,
+                        file_name=filename, 
+                        from_path=str(source),
+                        to_path=str(destination)
+                    )
                 except PermissionError as e:
                     raise PermissionError(
                         f"Cannot move file '{source}' to "
