@@ -66,3 +66,9 @@ class HistoryManager:
             result.append(row_dict)
             
         return result
+    
+    def delete_all_history(self):
+        """Delete all history records"""
+        query = "DELETE FROM history"
+        self.conn.execute(query)
+        self.conn.commit()

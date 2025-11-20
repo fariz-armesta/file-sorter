@@ -117,6 +117,8 @@ class MainWindow(QMainWindow):
             }
         """)
         
+        
+        
         self.table = QTableWidget()
         
         input_row.addWidget(self.input_box)
@@ -152,6 +154,28 @@ class MainWindow(QMainWindow):
         
         history_button.clicked.connect(self.show_history)
         layout.addWidget(history_button)
+        
+        self.delete_button = QPushButton("Delete All History")
+        self.delete_button.clicked.connect(self.delete_history)
+        self.delete_button.setFixedSize(150, 40)
+        
+        self.delete_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4c6daf;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #6f98e8;
+            }
+            QPushButton:pressed {
+                background-color: #5a8df2;
+            }
+        """)
+        
+        layout.addWidget(self.delete_button)
         
         central_widget.setLayout(layout)
         
@@ -214,5 +238,20 @@ class MainWindow(QMainWindow):
             self.table.setItem(row_index, 4, QTableWidgetItem(row["to_path"]))
             self.table.setItem(row_index, 5, QTableWidgetItem(row["moved_at"]))
             
+    def delete_history(self):
+        confirm = QMessageBox.question(
+            self,
+            "Confirm Delete",
+            "Are you sure you want to delete all history records?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
         
+        if confirm == QMessageBox.StandardButton.Yes:
+            self.history.delete_all_history()
+            self.table.setRowCount(0) 
+            
+            QMessageBox.information (
+                self,
+                "History Deleted",
+                "All history records have been deleted.")
         
