@@ -1,0 +1,85 @@
+QLineEdit#input_box {
+    padding: 8px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+QLineEdit#input_box:focus {
+    border: 2px solid #4CAF50
+}
+
+QPushButton#clear_button {
+    background-color: #d9534f;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+QPushButton#clear_button:hover {
+    background-color: #c9302c;
+}
+
+QPushButton#clean_button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+QPushButton#clean_button:hover {
+    background-color: #45a049;
+}
+
+QPushButton#clean_button:pressed {
+    background-color: #3e8e41;
+}
+
+QPushButton#folder_button {
+    background-color: #4c6daf;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+QPushButton#folder_button:hover {
+    background-color: #6f98e8;
+}
+
+QPushButton#folder_button:pressed {
+    background-color: #5a8df2;
+}
+
+QPushButton#history_button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+QPushButton#history_button:hover {
+    background-color: #45a049;
+}
+
+QPushButton#history_button:pressed {
+    background-color: #3e8e41;
+}
+
+QPushButton#delete_button {
+    background-color: #4c6daf;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+QPushButton#delete_button:hover {
+    background-color: #6f98e8;
+}
+
+QPushButton#delete_button:pressed {
+    background-color: #5a8df2;
+}

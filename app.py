@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QTableWidgetItem,
     QTableWidget,
+    QStackedWidget,
 )
 from PyQt6.QtGui import QIcon
  
@@ -23,6 +24,9 @@ class MainWindow(QMainWindow):
             
     def __init__(self):
         super().__init__()
+        
+        with open("style.qss", "r") as f:
+            self.setStyleSheet(f.read())
         
         self.history = HistoryManager()
         
@@ -37,38 +41,32 @@ class MainWindow(QMainWindow):
         
         layout = QVBoxLayout()
         
+        nav_layout = QVBoxLayout()
+        
+        self.btn_home = QPushButton("Home")
+        self.btn_second = QPushButton("Second Page")
+        
+        self.btn_home.clicked.connect(lambda: self.stack.setCurrentIndex(0))
+        self.btn_second.clicked.connect(lambda: self.stack.setCurrentIndex(1))
+        
+        nav_layout.addWidget(self.btn_home)
+        nav_layout.addWidget(self.btn_second)
+        nav_layout.addStretch()
+        
+        self.stack = QStackedWidget()
+        
+        layout.addLayout(nav_layout)
+        layout.addWidget(self.stack, stretch=1)
+        
         self.input_box = QLineEdit()
         self.input_box.setPlaceholderText("Folder Path")
         self.input_box.setFixedSize(250, 35)
+        self.input_box.setObjectName("input_box")
         
         self.clear_button = QPushButton("X")
         self.clear_button.setFixedSize(30, 30)
-        self.clear_button.setStyleSheet("""
-            QPushButton {
-                background-color: #d9534f;
-                color: white;
-                border-radius: 5px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #c9302c;
-            }
-        """)
         self.clear_button.clicked.connect(self.input_box.clear)
-        
-        self.input_box.setStyleSheet("""
-            QLineEdit {
-                padding: 8px;
-                font-size: 14px;
-                border: 2px solid #ccc;
-                border-radius: 8px;
-            }
-            QLineEdit:focus {
-                border: 2px solid #4CAF50
-            }                                     
-                                                        
-        """)
-        
+        self.clear_button.setObjectName("clear_button")
         
         button_row = QHBoxLayout()
         
@@ -76,51 +74,16 @@ class MainWindow(QMainWindow):
         
         button = QPushButton("Clean Folder")
         button.setFixedSize(150, 40)
-        
-        button.setStyleSheet("""
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 10px;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-            QPushButton:pressed {
-                background-color: #3e8e41;
-            }
-        """)
-        
+        button.setObjectName("clean_button")
         button.clicked.connect(self.show_text)
         
         self.label_folder = QLabel("")
         self.button_folder = QPushButton("Select Folder")
         self.button_folder.clicked.connect(self.select_folder)
-        
         self.button_folder.setFixedSize(150, 40)
-        
-        self.button_folder.setStyleSheet("""
-            QPushButton {
-                background-color: #4c6daf;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 10px;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #6f98e8;
-            }
-            QPushButton:pressed {
-                background-color: #5a8df2;
-            }
-        """)
-        
-        
-        
+        self.button_folder.setObjectName("folder_button")
+          
         self.table = QTableWidget()
-        
         input_row.addWidget(self.input_box)
         input_row.addWidget(self.clear_button)
         layout.addLayout(input_row)
@@ -135,45 +98,14 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.table)
         
         history_button = QPushButton("Show History")
-        
-        history_button.setStyleSheet("""
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 10px;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-            QPushButton:pressed {
-                background-color: #3e8e41;
-            }
-        """)
-        
+        history_button.setObjectName("history_button")
         history_button.clicked.connect(self.show_history)
         layout.addWidget(history_button)
         
         self.delete_button = QPushButton("Delete All History")
         self.delete_button.clicked.connect(self.delete_history)
         self.delete_button.setFixedSize(150, 40)
-        
-        self.delete_button.setStyleSheet("""
-            QPushButton {
-                background-color: #4c6daf;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 10px;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #6f98e8;
-            }
-            QPushButton:pressed {
-                background-color: #5a8df2;
-            }
-        """)
+        self.delete_button.setObjectName("delete_button")
         
         layout.addWidget(self.delete_button)
         
