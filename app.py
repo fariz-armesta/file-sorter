@@ -47,7 +47,6 @@ class MainWindow(QMainWindow):
         self.label_folder = QLabel("")
         
         self.table = QTableWidget()
-        
         self.action_buttons()
         
         central_widget.setLayout(self.layout)    
@@ -83,8 +82,7 @@ class MainWindow(QMainWindow):
         self.layout.addLayout(self.button_row)        
         self.layout.addWidget(self.label)
         
-        self.layout.addWidget(self.label_folder)
-        self.layout.addWidget(self.table)
+        self.create_table()
         
         self.history_button = self.create_button(
             "Show History", "history_button", no_size=True
@@ -98,6 +96,10 @@ class MainWindow(QMainWindow):
         
         self.layout.addWidget(self.delete_button)
         
+    def create_table(self):
+        self.layout.addWidget(self.label_folder)
+        self.layout.addWidget(self.table)
+    
     def window_setup(self):
         self.setWindowTitle("File Sorter - Armesta")
         self.setMinimumSize(400, 300)
@@ -120,11 +122,7 @@ class MainWindow(QMainWindow):
         self.delete_button.clicked.connect(self.delete_history)
         
     def show_error(self, message):
-        msg = QMessageBox()
-        msg.setWindowTitle("Error")
-        msg.setText(message)
-        msg.setIcon(QMessageBox.Icon.Critical)
-        msg.exec()
+        QMessageBox.critical(self, "Error", message)
         self.input_box.clear()
         
     def show_text(self):
