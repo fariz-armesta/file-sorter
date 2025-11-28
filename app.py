@@ -11,7 +11,6 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QTableWidgetItem,
     QTableWidget,
-    QStackedWidget,
 )
 from PyQt6.QtGui import QIcon
  
@@ -26,30 +25,38 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setup_style()
         self.window_setup()
-        self.setup_wdidgets()
         
         self.history = HistoryManager()
         
+        self.create_home_page()
+        self.setup_connection()
+        
+    def create_home_page(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         
-        input_row = QHBoxLayout() 
-        layout = QVBoxLayout()
-        nav_layout = QVBoxLayout()
-        
-        self.btn_home.clicked.connect(lambda: self.stack.setCurrentIndex(0))
-        self.btn_second.clicked.connect(lambda: self.stack.setCurrentIndex(1))
-        
-        nav_layout.addWidget(self.btn_home)
-        nav_layout.addWidget(self.btn_second)
-        nav_layout.addStretch()
-        
-        self.stack = QStackedWidget()
-        
-        layout.addLayout(nav_layout)
-        layout.addWidget(self.stack, stretch=1)
-        
+        self.input_row = QHBoxLayout() 
+        self.layout = QVBoxLayout()
+
         self.input_box = QLineEdit()
+
+        self.button_row = QHBoxLayout()
+        
+        self.label = QLabel("")
+        
+        self.label_folder = QLabel("")
+        
+        self.table = QTableWidget()
+        
+        self.action_buttons()
+        
+        central_widget.setLayout(self.layout)    
+        
+    def setup_style(self):
+        with open("style.qss", "r") as f:
+            self.setStyleSheet(f.read())
+        
+    def action_buttons(self):
         self.input_box.setPlaceholderText("Folder Path")
         self.input_box.setFixedSize(250, 35)
         self.input_box.setObjectName("input_box")
@@ -57,60 +64,39 @@ class MainWindow(QMainWindow):
         self.clear_button = self.create_button(
             "X", "clear_button", height=30, width=30
         )
-        self.clear_button.clicked.connect(self.input_box.clear)
-
         
-        button_row = QHBoxLayout()
+        self.input_row.addWidget(self.input_box)
+        self.input_row.addWidget(self.clear_button)
+        self.layout.addLayout(self.input_row)
         
-        self.label = QLabel("")
-        
-        button = self.create_button(
+        self.button = self.create_button(
             "Clean Folder", "clean_button"
         )
-        button.clicked.connect(self.show_text)
+        self.button_row.addWidget(self.button)
         
-        
-        self.label_folder = QLabel("")
         self.button_folder = self.create_button(
             "Select Folder", "folder_button"
         )
-        self.button_folder.clicked.connect(self.select_folder)
-          
-        self.table = QTableWidget()
-        input_row.addWidget(self.input_box)
-        input_row.addWidget(self.clear_button)
-        layout.addLayout(input_row)
+        self.button_row.addWidget(self.button_folder)
         
-        button_row.addWidget(button)
-        button_row.addWidget(self.button_folder)
-        button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addLayout(button_row)        
-        layout.addWidget(self.label)
+        self.button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.addLayout(self.button_row)        
+        self.layout.addWidget(self.label)
         
-        layout.addWidget(self.label_folder)
-        layout.addWidget(self.table)
-        
+        self.layout.addWidget(self.label_folder)
+        self.layout.addWidget(self.table)
         
         self.history_button = self.create_button(
             "Show History", "history_button", no_size=True
         )
-        self.history_button.clicked.connect(self.show_history)
         
-        
-        layout.addWidget(self.history_button)
+        self.layout.addWidget(self.history_button)
         
         self.delete_button = self.create_button(
             "Delete All History", "delete_button"
         )
-        self.delete_button.clicked.connect(self.delete_history)
         
-        layout.addWidget(self.delete_button)
-        
-        central_widget.setLayout(layout)
-        
-    def setup_style(self):
-        with open("style.qss", "r") as f:
-            self.setStyleSheet(f.read())
+        self.layout.addWidget(self.delete_button)
         
     def window_setup(self):
         self.setWindowTitle("File Sorter - Armesta")
@@ -124,11 +110,14 @@ class MainWindow(QMainWindow):
             button.setFixedSize(width, height)
             return button
         else:
-            return button    
-        
-    def setup_wdidgets(self):
-        self.btn_home = QPushButton("Home")
-        self.btn_second = QPushButton("Second Page")
+            return button 
+           
+    def setup_connection(self):
+        self.clear_button.clicked.connect(self.input_box.clear)
+        self.button.clicked.connect(self.show_text)
+        self.button_folder.clicked.connect(self.select_folder)
+        self.history_button.clicked.connect(self.show_history)
+        self.delete_button.clicked.connect(self.delete_history)
         
     def show_error(self, message):
         msg = QMessageBox()
