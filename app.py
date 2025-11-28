@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.history_button)
         
         self.delete_button = self.create_button(
-            "Delete All History", "delete_button"
+            "Delete All History", "delete_button", no_size=True
         )
         
         self.layout.addWidget(self.delete_button)
@@ -150,6 +150,8 @@ class MainWindow(QMainWindow):
         except PermissionError as e:
             self.show_error(str(e))
             self.input_box.clear()
+        except ValueError as e:
+            self.show_error(str(e))
             
     def select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")

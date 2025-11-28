@@ -27,6 +27,8 @@ class FileSorter:
             raise PermissionError(
                 f"No read/write permission for folder: {self.folder_path}"
             )
+        if folder_path == "":
+            raise ValueError("Folder path cannot be empty.")
         
     def sort(self):
         """Sort files in the folder and categorize them by extension."""
@@ -52,6 +54,7 @@ class FileSorter:
                 self.file_dict[ext_res] = []
             
             self.file_dict[ext_res].append(name_res)
+            
 
     def make_folder(self):
         """Create subfolders for each file extension."""
