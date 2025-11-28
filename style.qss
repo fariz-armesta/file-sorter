@@ -83,3 +83,51 @@ QPushButton#delete_button:hover {
 QPushButton#delete_button:pressed {
     background-color: #5a8df2;
 }
+
+QComboBox#combo_box {
+    background-color: #4c6daf;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px; 
+}
+
+QComboBox#combo_box::drop-down {
+    width: 30px;
+    background-color: #3d5c97;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+QComboBox#combo_box::down-arrow {
+    image: url(ARMESTA2_small.png);
+    width: 14px;
+    height: 14px;
+}
+
+QComboBox#combo_box QAbstractItemView {
+    background-color: #3d5c97;
+    color: white;
+    border: 1px solid #2f4e85;
+    border-radius: 8px;
+    padding: 5px;
+    outline: 0; /* remove default focus border */
+}
+
+QComboBox#combo_box QAbstractItemView::item {
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+QComboBox#combo_box QAbstractItemView::item:hover {
+    background-color: #4c6daf;
+}
+
+QLabel#combo_label {
+    background-color: #C15A5A;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}

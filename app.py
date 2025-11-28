@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QTableWidgetItem,
     QTableWidget,
+    QComboBox,
 )
 from PyQt6.QtGui import QIcon
  
@@ -35,6 +36,15 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         
+        self.combo_layout = QVBoxLayout()
+        self.combo_label = QLabel("Select Sorting Method:")
+        self.combo_label.setObjectName("combo_label")
+        
+        self.combo_box = QComboBox()
+        self.combo_box.addItems(["Extention", "Date"])
+        self.combo_box.setObjectName("combo_box")
+        self.combo_box.setFixedSize(200, 40)
+        
         self.input_row = QHBoxLayout() 
         self.layout = QVBoxLayout()
 
@@ -56,6 +66,12 @@ class MainWindow(QMainWindow):
             self.setStyleSheet(f.read())
         
     def action_buttons(self):
+        self.combo_layout.addWidget(self.combo_label)
+        self.combo_layout.addWidget(self.combo_box)
+        self.combo_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.addLayout(self.combo_layout)
+        
+        self.input_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.input_box.setPlaceholderText("Folder Path")
         self.input_box.setFixedSize(250, 35)
         self.input_box.setObjectName("input_box")
@@ -102,7 +118,7 @@ class MainWindow(QMainWindow):
     
     def window_setup(self):
         self.setWindowTitle("File Sorter - Armesta")
-        self.setMinimumSize(400, 300)
+        self.setMinimumSize(640, 650)
         self.setWindowIcon(QIcon("ARMESTA2_small.png"))
     
     def create_button(self, text, obj_name, height=40, width=150, no_size=False):
