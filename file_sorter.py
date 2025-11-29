@@ -2,16 +2,20 @@ import os
 import shutil
 from pathlib import Path
 import uuid
+import datetime
+from pprint import pprint
 
 from history_manager import HistoryManager
 
 class FileSorter:
     """Sort files in a folder into subfolders based on their extensions."""
     
-    def __init__(self, folder_path: str):
+    def __init__(self, folder_path: str, mode: str):
         self.history = HistoryManager()
         self.folder_path = Path(folder_path)
+        self.mode = mode
         self.file_dict = {}
+        self.sort_by_date()
         
         if not self.folder_path.exists():
             raise FileNotFoundError(
@@ -29,6 +33,25 @@ class FileSorter:
             )
         if folder_path == "":
             raise ValueError("Folder path cannot be empty.")
+        
+    def sort_by_date(self):
+        items = self.folder_path.iterdir()
+        for item in items:
+            if item.is_dir():
+                continue
+            
+            if not item.exists():
+                continue
+            
+            if item.is_file():
+                created_timestamp = item.stat().st_ctime
+                created_date = datetime.datetime.fromtimestamp(created_timestamp)
+                created_date = created_date.strftime("%Y-%m-%d")
+                if created_date not in self.file_dict:
+                    self.file_dict[created_date] = []
+                
+                self.file_dict[created_date].append(item.name)
+        
         
     def sort(self):
         """Sort files in the folder and categorize them by extension."""
@@ -55,7 +78,6 @@ class FileSorter:
             
             self.file_dict[ext_res].append(name_res)
             
-
     def make_folder(self):
         """Create subfolders for each file extension."""
         for ext in self.file_dict:
@@ -75,7 +97,10 @@ class FileSorter:
             destination_folder = self.folder_path / ext.upper()
             
             for name in names: 
-                filename = f"{name}.{ext}"
+                if self.mode == "Extention":
+                    filename = f"{name}.{ext}"
+                elif self.mode == "Date":
+                    filename = f"{name}"
                 source = self.folder_path / filename
                 destination = destination_folder / filename
                 
@@ -101,6 +126,12 @@ class FileSorter:
     
     def run(self):
         """Execute the sorting process."""
-        self.sort()
-        self.make_folder()
-        self.move_files()
+        if self.mode == "Extention":
+            self.sort()
+            self.make_folder()
+            self.move_files()
+        elif self.mode == "Date":
+            self.sort_by_date()
+            self.make_folder()
+            self.move_files()
+

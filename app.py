@@ -143,9 +143,11 @@ class MainWindow(QMainWindow):
         
     def show_text(self):
         path = self.input_box.text()
+        mode = self.combo_box.currentText()
+        print(mode)
         
         try:
-            self.file_sorter = FileSorter(path)    
+            self.file_sorter = FileSorter(path, mode)    
             self.file_sorter.run()
         
             msg = QMessageBox()
