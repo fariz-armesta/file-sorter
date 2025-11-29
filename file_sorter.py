@@ -3,7 +3,6 @@ import shutil
 from pathlib import Path
 import uuid
 import datetime
-from pprint import pprint
 
 from history_manager import HistoryManager
 

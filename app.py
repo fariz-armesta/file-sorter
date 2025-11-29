@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem,
     QTableWidget,
     QComboBox,
+    QFrame,
 )
 from PyQt6.QtGui import QIcon
  
@@ -51,6 +52,11 @@ class MainWindow(QMainWindow):
         self.input_box = QLineEdit()
 
         self.button_row = QHBoxLayout()
+        
+        self.line_above_table = QFrame()
+        self.setObjectName("line_above_table")
+        self.line_above_table.setFrameShape(QFrame.Shape.HLine)
+        self.line_above_table.setFrameShadow(QFrame.Shadow.Sunken)
         
         self.label = QLabel("")
         
@@ -98,6 +104,8 @@ class MainWindow(QMainWindow):
         self.layout.addLayout(self.button_row)        
         self.layout.addWidget(self.label)
         
+        self.layout.addWidget(self.line_above_table)
+        
         self.create_table()
         
         self.history_button = self.create_button(
@@ -144,7 +152,6 @@ class MainWindow(QMainWindow):
     def show_text(self):
         path = self.input_box.text()
         mode = self.combo_box.currentText()
-        print(mode)
         
         try:
             self.file_sorter = FileSorter(path, mode)    

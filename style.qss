@@ -1,16 +1,20 @@
+MainWindow {
+    background-color: #153a42;
+}
+
 QLineEdit#input_box {
     padding: 8px;
     font-size: 14px;
-    border: 2px solid #ccc;
+    border: 2px solid #f78b04;
     border-radius: 8px;
 }
 
 QLineEdit#input_box:focus {
-    border: 2px solid #4CAF50
+    border: 2px solid #a30502
 }
 
 QPushButton#clear_button {
-    background-color: #d9534f;
+    background-color: #a30502;
     color: white;
     border-radius: 5px;
     font-weight: bold;
@@ -21,7 +25,7 @@ QPushButton#clear_button:hover {
 }
 
 QPushButton#clean_button {
-    background-color: #4CAF50;
+    background-color: #f78b04;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -29,15 +33,15 @@ QPushButton#clean_button {
 }
 
 QPushButton#clean_button:hover {
-    background-color: #45a049;
+    background-color: #f7a43b;
 }
 
 QPushButton#clean_button:pressed {
-    background-color: #3e8e41;
+    background-color: #c97306;
 }
 
 QPushButton#folder_button {
-    background-color: #4c6daf;
+    background-color: #027f93;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -53,7 +57,7 @@ QPushButton#folder_button:pressed {
 }
 
 QPushButton#history_button {
-    background-color: #4CAF50;
+    background-color: #f78b04;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -61,15 +65,15 @@ QPushButton#history_button {
 }
 
 QPushButton#history_button:hover {
-    background-color: #45a049;
+    background-color: #f7a43b;
 }
 
 QPushButton#history_button:pressed {
-    background-color: #3e8e41;
+    background-color: #c97306;
 }
 
 QPushButton#delete_button {
-    background-color: #4c6daf;
+    background-color: #027f93;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -85,7 +89,7 @@ QPushButton#delete_button:pressed {
 }
 
 QComboBox#combo_box {
-    background-color: #4c6daf;
+    background-color: #027f93;
     color: white;
     border: 1px solid gray;
     border-radius: 10px;
@@ -95,7 +99,7 @@ QComboBox#combo_box {
 
 QComboBox#combo_box::drop-down {
     width: 30px;
-    background-color: #3d5c97;
+    background-color: #027f93;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -121,11 +125,11 @@ QComboBox#combo_box QAbstractItemView::item {
 }
 
 QComboBox#combo_box QAbstractItemView::item:hover {
-    background-color: #4c6daf;
+    background-color: #027f93;
 }
 
 QLabel#combo_label {
-    background-color: #C15A5A;
+    background-color: #a30502;
     color: white;
     padding: 8px 12px;
     border-radius: 8px;
