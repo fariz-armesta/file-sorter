@@ -14,7 +14,6 @@ class FileSorter:
         self.folder_path = Path(folder_path)
         self.mode = mode
         self.file_dict = {}
-        self.sort_by_date()
         
         if not self.folder_path.exists():
             raise FileNotFoundError(
