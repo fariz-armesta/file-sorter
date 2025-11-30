@@ -4,7 +4,8 @@ from datetime import datetime
 class HistoryManager:
     
     def __init__(self, db_path="history.db"):
-        self.conn = sqlite3.connect(db_path)
+        self.db_path = db_path 
+        self.conn = sqlite3.connect(self.db_path)
         self.create_table()
         
     def create_table(self):
@@ -72,3 +73,40 @@ class HistoryManager:
         query = "DELETE FROM history"
         self.conn.execute(query)
         self.conn.commit()
+        
+    def get_last_batch(self):
+        cursor = self.conn.cursor()
+        
+        cursor.execute("""
+            SELECT batch_id FROM history
+            ORDER BY id DESC
+            LIMIT 1               
+        """)
+        result = cursor.fetchone()
+        self.conn.close()
+        
+        return result[0] if result else None
+    
+    def get_batch_records(self, batch_id):
+        self.conn = sqlite3.connect(self.db_path)
+        cursor = self.conn.cursor()
+        
+        cursor.execute("""
+            SELECT file_name, from_path, to_path
+            FROM history
+            WHERE batch_id = ?
+        """, (batch_id,))  
+        
+        rows = cursor.fetchall()
+        self.conn.close()
+        return rows
+    
+    def delete_batch(self, batch_id):
+        cursor = self.conn.cursor()
+        
+        cursor.execute("""
+            DELETE FROM history
+            WHERE batch_id = ?
+        """, (batch_id,))
+        self.conn.commit()
+        self.conn.close()

@@ -1,3 +1,4 @@
+import shutil
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QMessageBox, 
@@ -120,6 +121,49 @@ class MainWindow(QMainWindow):
         
         self.layout.addWidget(self.delete_button)
         
+        self.undo_button = self.create_button(
+            "Undo Last Batch", "undo_button", no_size=True
+        )
+        
+        self.layout.addWidget(self.undo_button)
+        
+        
+    def undo_last_batch(self):
+        batch_id = self.history.get_last_batch()
+        
+        if not batch_id:
+            QMessageBox.information(
+                self,
+                "No History",
+                "There is no batch to undo."
+            )
+            return
+        
+        records = self.history.get_batch_records(batch_id)
+        
+        errors = []
+        for file_name, from_path, to_path in records:
+            try:
+                shutil.move(to_path, from_path)
+            except Exception as e:
+                errors.append(f"Failed to move '{file_name}': {e}")
+        
+        if errors:
+            QMessageBox.warning(
+                self, 
+                "Undo completed with errors",
+                f"Some files could not be moved back:\n\n" +
+                "\n".join([f"{name}: {error}" for name, error in errors])
+            )
+        else:
+            QMessageBox.information(
+                self,
+                "Undo Successful",
+                "The last batch has been undone successfully."
+            )
+        self.history.delete_batch_history(batch_id)
+        self.show_history()
+        
     def create_table(self):
         self.layout.addWidget(self.label_folder)
         self.layout.addWidget(self.table)
@@ -144,6 +188,7 @@ class MainWindow(QMainWindow):
         self.button_folder.clicked.connect(self.select_folder)
         self.history_button.clicked.connect(self.show_history)
         self.delete_button.clicked.connect(self.delete_history)
+        self.undo_button.clicked.connect(self.undo_last_batch)
         
     def show_error(self, message):
         QMessageBox.critical(self, "Error", message)

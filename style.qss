@@ -97,6 +97,10 @@ QComboBox#combo_box {
     font-size: 14px; 
 }
 
+QComboBox#combo_box:hover {
+    background-color: #04b5d1;
+}
+
 QComboBox#combo_box::drop-down {
     width: 30px;
     background-color: #027f93;
@@ -134,4 +138,16 @@ QLabel#combo_label {
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 14px;
+}
+
+QPushButton#undo_button {
+    background-color: #a30502;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+QPushButton#undo_button:hover {
+    background-color: #f70905;
 }
